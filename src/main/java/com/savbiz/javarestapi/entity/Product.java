@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import lombok.Data;
 
@@ -19,8 +19,9 @@ public class Product {
   private BigDecimal currentPrice;
   private Date lastUpdate;
 
-  @PrePersist
+  @PreUpdate
   protected void onUpdate() {
     lastUpdate = new Date();
   }
+
 }

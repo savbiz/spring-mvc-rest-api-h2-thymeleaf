@@ -1,4 +1,4 @@
-package com.savbiz.javarestapi.controller;
+package com.savbiz.javarestapi.web;
 
 import com.savbiz.javarestapi.entity.Product;
 import com.savbiz.javarestapi.repository.ProductRepository;

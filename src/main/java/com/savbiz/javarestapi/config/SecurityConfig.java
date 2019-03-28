@@ -28,8 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    //@formatter:off
+  protected void configure(final HttpSecurity http) throws Exception {
     http
         .httpBasic().disable()
         .csrf().disable()
@@ -37,14 +36,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .authorizeRequests()
         .antMatchers("/auth/signin").permitAll()
-        .antMatchers(HttpMethod.GET, "/vehicles/**").permitAll()
-        .antMatchers(HttpMethod.DELETE, "/vehicles/**").hasRole("ADMIN")
-        .antMatchers(HttpMethod.GET, "/v1/vehicles/**").permitAll()
+        .antMatchers(HttpMethod.GET, "/api/product").hasRole("ADMIN")
+        .antMatchers(HttpMethod.GET, "/api/product").hasRole("USER")
+        .antMatchers(HttpMethod.POST, "/api/product/add").hasRole("ADMIN")
+        .antMatchers(HttpMethod.GET, "/api/product/new").hasRole("ADMIN")
+        .antMatchers(HttpMethod.GET, "/api/product/delete/*").hasRole("ADMIN")
+        .antMatchers(HttpMethod.POST, "/api/product/update/*").hasRole("ADMIN")
         .anyRequest().authenticated()
         .and()
+        .exceptionHandling()
+        .accessDeniedHandler(accessDeniedHandler)
+        .and()
         .apply(new JwtConfigurer(jwtTokenProvider));
-    //@formatter:on
   }
-
-
 }

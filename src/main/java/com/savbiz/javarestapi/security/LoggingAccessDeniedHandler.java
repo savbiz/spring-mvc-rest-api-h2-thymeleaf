@@ -15,12 +15,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoggingAccessDeniedHandler implements AccessDeniedHandler {
 
-  private static Logger log = LoggerFactory.getLogger(LoggingAccessDeniedHandler.class);
+  private static final Logger log = LoggerFactory.getLogger(LoggingAccessDeniedHandler.class);
 
   @Override
   public void handle(HttpServletRequest request,
       HttpServletResponse response,
-      AccessDeniedException ex) throws IOException, ServletException {
+      AccessDeniedException ex) throws IOException {
 
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 

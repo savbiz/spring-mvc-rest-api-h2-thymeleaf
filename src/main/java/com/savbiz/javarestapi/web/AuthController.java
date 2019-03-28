@@ -35,18 +35,21 @@ public class AuthController {
   public ResponseEntity signin(@RequestBody AuthenticationRequest data) {
 
     try {
-      String username = data.getUsername();
+      final String username = data.getUsername();
       authenticationManager
           .authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
-      String token = jwtTokenProvider.createToken(username, this.users.findByUsername(username)
+      final String token = jwtTokenProvider.createToken(username, users.findByUsername(username)
           .orElseThrow(() -> new UsernameNotFoundException("Username " + username + "not found"))
           .getRoles());
 
-      Map<Object, Object> model = new HashMap<>();
+      final Map<Object, Object> model = new HashMap<>();
+
       model.put("username", username);
       model.put("token", token);
+
       return ok(model);
-    } catch (AuthenticationException e) {
+
+    } catch (final AuthenticationException e) {
       throw new BadCredentialsException("Invalid username/password supplied");
     }
   }

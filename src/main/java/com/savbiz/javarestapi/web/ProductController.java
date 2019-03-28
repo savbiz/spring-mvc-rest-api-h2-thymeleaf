@@ -2,78 +2,47 @@ package com.savbiz.javarestapi.web;
 
 import com.savbiz.javarestapi.entity.Product;
 import com.savbiz.javarestapi.repository.ProductRepository;
-import javax.validation.Valid;
+import java.util.Optional;
+import javassist.tools.web.BadHttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
+@RequestMapping(path = "/api/products")
 public class ProductController {
 
   @Autowired
-  private ProductRepository productRepository;
+  private ProductRepository repository;
 
-  @RequestMapping({"/"})
-  public String index(final Model model) {
-    model.addAttribute("products", productRepository.findAll());
-    return "index";
+  @GetMapping
+  public Iterable<Product> findAll() {
+    return repository.findAll();
   }
 
-  @GetMapping("/newproduct")
-  public String showSignUpForm(final Product product) {
-    return "add-product";
+  @GetMapping(path = "/{id}")
+  public Optional<Product> find(@PathVariable("id") Long id) {
+    return repository.findById(id);
   }
 
-  @PostMapping("/addproduct")
-  public String addProduct(@Valid final Product product, final BindingResult result,
-      final Model model) {
-    if (result.hasErrors()) {
-      return "add-product";
-    }
-
-    productRepository.save(product);
-    model.addAttribute("products", productRepository.findAll());
-
-    return "index";
+  @PostMapping(consumes = "application/json")
+  public Product create(@RequestBody Product product) {
+    return repository.save(product);
   }
 
-  @GetMapping("/edit/{id}")
-  public String showUpdateForm(@PathVariable("id") final Long id, final Model model) {
-    final Product product = productRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Invalid product Id: " + id));
-
-    model.addAttribute("product", product);
-
-    return "update-product";
-  }
-
-  @PostMapping("/update/{id}")
-  public String updateProduct(@PathVariable("id") final Long id, @Valid final Product product,
-      BindingResult result, Model model) {
-    if (result.hasErrors()) {
+  @PutMapping(path = "/{id}")
+  public Product update(@PathVariable("id") Long id, @RequestBody Product product)
+      throws BadHttpRequest {
+    if (repository.existsById(id)) {
       product.setId(id);
-      return "update-product";
+      return repository.save(product);
+    } else {
+      throw new BadHttpRequest();
     }
-
-    productRepository.save(product);
-    model.addAttribute("products", productRepository.findAll());
-
-    return "index";
-  }
-
-  @GetMapping("/delete/{id}")
-  public String deleteProduct(@PathVariable("id") final Long id, final Model model) {
-    Product product = productRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Invalid product Id: " + id));
-
-    productRepository.delete(product);
-    model.addAttribute("products", productRepository.findAll());
-
-    return "index";
   }
 }

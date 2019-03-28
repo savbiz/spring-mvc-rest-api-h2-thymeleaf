@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -17,7 +17,6 @@
 <body>
 <div th:switch="${products}">
   <h2 th:case="null">No products yet!</h2>
-  <h2 th:case="0">No products yet!</h2>
   <div th:case="*">
     <h2>Products</h2>
     <table border="1">
@@ -37,13 +36,14 @@
         <td th:text="${product.name}"></td>
         <td th:text="${product.currentPrice}"></td>
         <td th:text="${product.lastUpdate}"></td>
-        <td><a th:href="@{/edit/{id}(id=${product.id})}">Edit</a></td>
-        <td><a th:href="@{/delete/{id}(id=${product.id})}">Delete</a></td>
+        <td><a th:href="@{/api/product/edit/{id}(id=${product.id})}">Edit</a></td>
+        <td><a th:href="@{/api/product/delete/{id}(id=${product.id})}">Delete</a></td>
       </tr>
       </tbody>
     </table>
   </div>
-  <p><a href="/newproduct">Add a new product</a></p>
+  <p><a href="/api/product/new">Add a new product</a></p>
+  <p><a href="/logout">Logout</a></p>
 </div>
 </body>
 </html>

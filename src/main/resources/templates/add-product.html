@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -19,7 +19,7 @@
   <h2 class="mb-5">New Product</h2>
   <div class="row">
     <div class="col-md-6">
-      <form action="#" th:action="@{/addproduct}" th:object="${product}" method="post">
+      <form action="#" th:action="@{/api/product/add}" th:object="${product}" method="post">
         <div class="row">
           <div class="form-group col-md-6">
             <label for="name" class="col-form-label">Name</label>

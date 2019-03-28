@@ -1,4 +1,4 @@
-package com.savbiz.javarestapi.controller;
+package com.savbiz.javarestapi.web;
 
 import com.savbiz.javarestapi.entity.Product;
 import com.savbiz.javarestapi.repository.ProductRepository;
@@ -12,11 +12,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+@RequestMapping({"/api/product"})
 @Controller
 public class ProductController {
 
+  private final ProductRepository productRepository;
+
   @Autowired
-  private ProductRepository productRepository;
+  public ProductController(ProductRepository productRepository) {
+    this.productRepository = productRepository;
+  }
 
   @RequestMapping({"/"})
   public String index(final Model model) {
@@ -24,12 +29,12 @@ public class ProductController {
     return "index";
   }
 
-  @GetMapping("/newproduct")
-  public String showSignUpForm(final Product product) {
+  @GetMapping("/new")
+  public String showAddProductForm(final Product product) {
     return "add-product";
   }
 
-  @PostMapping("/addproduct")
+  @PostMapping("/add")
   public String addProduct(@Valid final Product product, final BindingResult result,
       final Model model) {
     if (result.hasErrors()) {
@@ -68,7 +73,7 @@ public class ProductController {
 
   @GetMapping("/delete/{id}")
   public String deleteProduct(@PathVariable("id") final Long id, final Model model) {
-    Product product = productRepository.findById(id)
+    final Product product = productRepository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Invalid product Id: " + id));
 
     productRepository.delete(product);

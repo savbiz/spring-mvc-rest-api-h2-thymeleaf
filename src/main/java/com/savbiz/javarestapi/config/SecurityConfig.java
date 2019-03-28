@@ -1,7 +1,6 @@
 package com.savbiz.javarestapi.config;
 
 import com.savbiz.javarestapi.web.LoggingAccessDeniedHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -29,14 +28,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http
+  protected void configure(HttpSecurity httpSecurity) throws Exception {
+    httpSecurity
         .authorizeRequests()
         .antMatchers(
             "/js/**",
             "/css/**",
             "/img/**",
-            "/webjars/**").permitAll()
+            "/webjars/**",
+            "/h2-console/**").permitAll()
         .antMatchers("/api/product/**").hasAnyRole("USER", "ADMIN")
         .anyRequest().authenticated()
         .and()
@@ -53,6 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .exceptionHandling()
         .accessDeniedHandler(accessDeniedHandler);
+
+    httpSecurity.csrf().disable();
+    httpSecurity.headers().frameOptions().disable();
   }
 
   @Override

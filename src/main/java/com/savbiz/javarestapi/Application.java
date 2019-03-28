@@ -15,7 +15,8 @@ public class Application {
 
   @Bean
   public ServletRegistrationBean<WebServlet> h2servletRegistration() {
-    final ServletRegistrationBean<WebServlet> registration = new ServletRegistrationBean<>(new WebServlet());
+    final ServletRegistrationBean<WebServlet> registration = new ServletRegistrationBean<>(
+        new WebServlet());
     registration.addUrlMappings("/h2-console/*");
     return registration;
   }

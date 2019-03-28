@@ -2,14 +2,19 @@
 
 ## How to run it
 
-The app has been dockerized so just run the following command to fetch the image from Docker Hub (https://cloud.docker.com/repository/docker/savbiz/java-rest-api).
+The app has been dockerized so in order to run it you just need to fetch image from Docker Hub.
 
 Here's an example on how to run it:
 
 ```
 $ docker run -p 8080:8080 savbiz/java-rest-api
 ``` 
-Then the bot will start and the following output will be printed:
+
+The Docker image, if not present locally, will be downloaded automatically from "savbiz" registry on Docker Hub (https://cloud.docker.com/repository/docker/savbiz/java-rest-api).
+
+Be sure you are correctly logged in to Docker before pulling the image.
+
+If everything goes according to the plan, the application will start on port 8080 and the following output will be printed out:
 ```
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -58,10 +63,16 @@ Then the bot will start and the following output will be printed:
 2019-03-28 18:54:14.761  INFO 1 --- [           main] com.savbiz.javarestapi.Application       : Started Application in 8.104 seconds (JVM running for 8.607)20:55:24.756 [WebSocketClient@785570251-14] INFO com.savbiz.buxtradingbot.bot.SingleTradingBot - Ignoring trading quote as current price 13.66 is not equal to wanted buy price 13.28....
 ```
 
+Then open your browser and navigate to http://localhost:8080.
+
+Login with dummy users can be done with following credentials:
+* username: "user" or "admin"
+* password: "user" or "admin" 
+
 ## Improvements
 
 * Frontend with Angular can be created so it's easier to handle JWT;
-* Use persistant DB (MySQL, PostgreSQL etc...);
+* Use persistent DB (MySQL, PostgreSQL etc...);
 * Use HTTPS
 * Consider OAuth
 * and many more...
